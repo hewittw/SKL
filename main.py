@@ -8,6 +8,8 @@ import seaborn as sns
 from sklearn.linear_model import LinearRegression, LogisticRegression, Perceptron, RidgeClassifier, SGDClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, ConfusionMatrixDisplay, plot_confusion_matrix, confusion_matrix
+from sklearn.pipeline import make_pipeline
+from sklearn.preprocessing import StandardScaler, MinMaxScaler, RobustScaler, MaxAbsScaler
 
 #--------------------------------------------------------------------------------------------------------------------------------#
 #--------------------------------------------------------------------------------------------------------------------------------#
@@ -54,8 +56,23 @@ def main():
                     SGDClassifier(max_iter = 1000000),
                     RidgeClassifier(max_iter = 1000000)]
 
+    # uncomment these two lines out to use MinMaxScaler
+    # min_max_scaler = MinMaxScaler()
+    # x_train = min_max_scaler.fit_transform(x_train)
+
+    # uncomment these two lines out to use MaxAbsScaler
+    abs_scaler = MaxAbsScaler()
+    x_train = abs_scaler.fit_transform(x_train)
+
+    # uncomment these two lines out to use RobustScaler
+    # rbt_scaler = RobustScaler()
+    # x_train = rbt_scaler.fit_transform(x_train)
+
     # train the model
+
     for classifier in classifiers:
+
+
         classifier.fit(x_train,y_train)
 
         print(classifier.intercept_)
@@ -89,6 +106,7 @@ def main():
             fig = plt.figure()
             hplotConfusionMatrix(y_test, pred_test)
             plt.show()
+
 
     # try linear regression too
     lm = LinearRegression()
