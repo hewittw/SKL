@@ -10,6 +10,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, ConfusionMatrixDisplay, plot_confusion_matrix, confusion_matrix
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler, MinMaxScaler, RobustScaler, MaxAbsScaler
+from time import time
 
 #--------------------------------------------------------------------------------------------------------------------------------#
 #--------------------------------------------------------------------------------------------------------------------------------#
@@ -61,8 +62,8 @@ def main():
     # x_train = min_max_scaler.fit_transform(x_train)
 
     # uncomment these two lines out to use MaxAbsScaler
-    abs_scaler = MaxAbsScaler()
-    x_train = abs_scaler.fit_transform(x_train)
+    # abs_scaler = MaxAbsScaler()
+    # x_train = abs_scaler.fit_transform(x_train)
 
     # uncomment these two lines out to use RobustScaler
     # rbt_scaler = RobustScaler()
@@ -70,10 +71,14 @@ def main():
 
     # train the model
 
+    allTime = []
     for classifier in classifiers:
 
-
+        startTime = time()
         classifier.fit(x_train,y_train)
+        endTime = time()
+        timeTook = endTime - startTime
+        allTime.append(time)
 
         print(classifier.intercept_)
 
@@ -88,6 +93,8 @@ def main():
         print('MAE:', metrics.mean_absolute_error(y_test, pred_test))
         print('MSE:', metrics.mean_squared_error(y_test, pred_test))
         print('RMSE:', np.sqrt(metrics.mean_squared_error(y_test, pred_test)))
+
+        print("Time: %f" % (timeTook))
 
         correct = 0
         incorrect = 0
@@ -106,7 +113,6 @@ def main():
             fig = plt.figure()
             hplotConfusionMatrix(y_test, pred_test)
             plt.show()
-
 
     # try linear regression too
     lm = LinearRegression()
