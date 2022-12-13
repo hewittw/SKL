@@ -8,41 +8,49 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score, ConfusionMatrixDisplay
 
 # Input data files are available in the read-only "../input/" directory
 # For example, running this (by clicking run or pressing Shift+Enter) will list all files under the input directory
 
-import os
-for dirname, _, filenames in os.walk('/kaggle/input'):
-    for filename in filenames:
-        print(os.path.join(dirname, filename))
+# import os
+# for dirname, _, filenames in os.walk('/kaggle/input'):
+#     for filename in filenames:
+#         print(os.path.join(dirname, filename))
 
-# You can write up to 20GB to the current directory (/kaggle/working/) that gets preserved as output when you create a version using "Save & Run All" 
-# You can also write temporary files to /kaggle/temp/, but they won't be saved outside of the current session
+#--------------------------------------------------------------------------------------------------------------------------------#
+#--------------------------------------------------------------------------------------------------------------------------------#
+#--------------------------------------------------------------------------------------------------------------------------------#
 
-
-
+# Grpahing
 df = pd.read_csv("winequalityReds.csv")
 
-sns.pairplot(df)
+sns.pairplot(
+    df,
+    x_vars=["fixed.acidity", "volatile.acidity", "citric.acid", "residual.sugar", "residual.sugar", "free.sulfur.dioxide", "free.sulfur.dioxide", "density", "density", "density", "density", "density"],
+    y_vars=["quality"],
+    )
 
-plt.show()
+#plt.show()
 
 sns.distplot(df['quality'])
 
-plt.show()
+#plt.show()
 
 sns.scatterplot(x='density', y='alcohol', data=df)
 
-plt.show()
+#plt.show()
 
 x = df.drop('quality',axis=1)
 y = df['quality']
 
-plt.show()
+#plt.show()
 
+#--------------------------------------------------------------------------------------------------------------------------------#
+#--------------------------------------------------------------------------------------------------------------------------------#
+#--------------------------------------------------------------------------------------------------------------------------------#
 
-
+# Linear Regression
 
 lm = LinearRegression()
 
@@ -55,7 +63,7 @@ print(lm.intercept_)
 
 pred_train = lm.predict(x_train)
 
-pred_test = lm.predict(x_test)
+pred_test = lm.predict(x_test) # predictions
 
 print('MAE:', metrics.mean_absolute_error(y_train, pred_train))
 print('MSE:', metrics.mean_squared_error(y_train, pred_train))
@@ -64,3 +72,16 @@ print('RMSE:', np.sqrt(metrics.mean_squared_error(y_train, pred_train)))
 print('MAE:', metrics.mean_absolute_error(y_test, pred_test))
 print('MSE:', metrics.mean_squared_error(y_test, pred_test))
 print('RMSE:', np.sqrt(metrics.mean_squared_error(y_test, pred_test)))
+
+fig = plt.figure()
+sns.scatterplot(x=y_test, y=pred_test)
+plt.show()
+
+
+# print(pred_test)
+# print(y_test)
+#print(x_test['alcohol'])
+
+
+# print("\nAccuracy")
+# print("Accuracy:", )
